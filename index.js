@@ -38,12 +38,12 @@ async function run() {
     });
     app.put("/tasks/:id", async (req, res) => {
       const id = req.params.id;
-      const updatedUser = req.body;
+      const updatedTask = req.body;
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updatedDoc = {
         $set: {
-          task: updatedUser.task,
+          task: updatedTask.task,
         },
       };
       const result = await TaskCollection.updateOne(
@@ -60,11 +60,20 @@ async function run() {
       const tasks = await TaskCollection.insertOne(query);
       res.send(tasks);
     });
+
+    app.delete("/tasks/:id", async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const deleteTask = await TaskCollection.deleteOne(query);
+        res.send(deleteTask);
+      });
+
     app.get("/complete", async (req, res) => {
       const query = req.body;
       const task = await completeTask.find(query).toArray();
       res.send(task);
     });
+
 
     // Submit Task From tasks Collection
     app.post("/complete", async (req, res) => {
@@ -72,6 +81,8 @@ async function run() {
       const tasks = await completeTask.insertOne(query);
       res.send(tasks);
     });
+
+
   } finally {
   }
 }
