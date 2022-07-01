@@ -1,15 +1,13 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5000;
 const cors = require("cors");
 require("dotenv").config();
 app.use(cors());
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://todo-collection.netlify.app/",
-  })
-);
+const port = process.env.PORT || 5000;
+app.use(cors({
+origin: "*"
+}));
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://AbiAbdullah:FRfTLHbUxTu8goQK@cluster0.p7yehdu.mongodb.net/?retryWrites=true&w=majority";
