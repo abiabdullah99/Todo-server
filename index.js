@@ -5,7 +5,11 @@ const cors = require("cors");
 require("dotenv").config();
 app.use(cors());
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: "https://todo-collection.netlify.app/",
+  })
+);
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://AbiAbdullah:FRfTLHbUxTu8goQK@cluster0.p7yehdu.mongodb.net/?retryWrites=true&w=majority";
@@ -57,7 +61,7 @@ async function run() {
       const query = req.body;
       const tasks = await TaskCollection.insertOne(query);
       res.send(tasks);
-    })
+    });
     app.get("/complete", async (req, res) => {
       const query = req.body;
       const task = await completeTask.find(query).toArray();
@@ -69,7 +73,7 @@ async function run() {
       const query = req.body;
       const tasks = await completeTask.insertOne(query);
       res.send(tasks);
-    })
+    });
   } finally {
   }
 }
